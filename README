@@ -1,0 +1,15 @@
+3. “Compiler for Object Oriented Pascal”
+Course project in “ Compilers” under Dr. S.K. Agarwal (group 2)
+Aim:
+1. Handle basic data types, keywords, identifiers, variables, comments and procedures of Pascal.
+2. Basic operations like: Arithmetic, relational and logical, increment/decrement, assignment, Loops, switch and other control
+statements.
+ 
+Current Status:
+1.syntax analysis  is done using flex
+2.semantics analysis is done using yacc.
+3.Wrote complete grammer for Pascal
+4.Error reporting for some specific error
+5.Implemented basic data type int,real,boolean
+6.Arithmetic, relational and logical statement checking
+
