@@ -1,0 +1,1926 @@
+Nonterminals useless in grammar
+
+   func_call
+   $@6
+   actual_params
+   expr_list
+
+
+Terminals unused in grammar
+
+   BREAK
+   CASE
+   CLASS
+   CONST
+   CONTINUE
+   DOWNTO
+   EXIT
+   EXPORT
+   FOR
+   POW
+   GOTO
+   IN
+   IS
+   LABEL
+   MOD
+   OPERATOR
+   PRIVATE
+   PROCEDURE
+   PUBLIC
+   RECORD
+   REPEAT
+   STRING
+   TYPE
+   TO
+   WITH
+   XOR
+   BOR
+   BAND
+   BNOT
+   UNTIL
+
+
+Rules useless in grammar
+
+   76 $@6: /* empty */
+
+   77 func_call: IDENTIFIER $@6 actual_params
+
+   78 actual_params: '(' expr_list ')'
+
+   79 expr_list: expr
+   80          | expr_list COMMA expr
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: prog_heading block DOT
+
+    2 $@1: /* empty */
+
+    3 prog_heading: PROGRAM IDENTIFIER $@1 SCOLON
+
+    4 $@2: /* empty */
+
+    5 prog_heading: PROGRAM IDENTIFIER $@2 '(' id_list ')' SCOLON
+
+    6 id_list: IDENTIFIER
+    7        | id_list COMMA IDENTIFIER
+
+    8 block: decl_part stmt_part
+    9      | decl_part
+
+   10 decl_part: var_decl_part func_decl_part
+
+   11 var_decl_part: VAR var_decl_list SCOLON
+
+   12 var_decl_list: var_decl_list SCOLON var_decl
+   13              | var_decl
+
+   14 var_decl: id_list COLON type
+
+   15 type: std_type
+   16     | array_type
+   17     | ptr_type
+
+   18 ptr_type: PTR IDENTIFIER
+
+   19 array_type: ARRAY '[' index_type_list ']' OF std_type
+
+   20 index_type_list: INTNUM RANGE INTNUM
+   21                | index_type_list COMMA INTNUM RANGE INTNUM
+
+   22 std_type: INTEGER
+   23         | REAL
+   24         | BOOLEAN
+
+   25 stmt_part: _BEGIN stmt_seq END
+
+   26 stmt_seq: stmt_seq stmt SCOLON
+   27         | stmt SCOLON
+
+   28 stmt: assign_stmt
+   29     | if_stmt
+   30     | while_stmt
+   31     | compound_stmt
+
+   32 $@3: /* empty */
+
+   33 assign_stmt: IDENTIFIER $@3 ASSIGNMENT expr
+
+   34 if_stmt: IF '(' expr ')' THEN _BEGIN stmt_seq END
+   35        | IF '(' expr ')' THEN _BEGIN stmt_seq END ELSE _BEGIN stmt_seq END
+
+   36 while_stmt: WHILE '(' expr ')' DO _BEGIN stmt END
+
+   37 compound_stmt: _BEGIN stmt_seq END
+
+   38 expr: simple_expr
+   39     | simple_expr LT simple_expr
+   40     | simple_expr LTE simple_expr
+   41     | simple_expr GT simple_expr
+   42     | simple_expr GTE simple_expr
+   43     | simple_expr ISEQUAL simple_expr
+   44     | simple_expr NE simple_expr
+
+   45 simple_expr: term
+   46            | simple_expr ADD term
+   47            | simple_expr SUB term
+   48            | simple_expr OR term
+
+   49 term: factor
+   50     | term MULT factor
+   51     | term DIV factor
+   52     | term AND factor
+
+   53 factor: INTNUM
+   54       | REALNUM
+   55       | IDENTIFIER
+   56       | NOT factor
+   57       | '(' expr ')'
+   58       | _TRUE
+   59       | _FALSE
+   60       | SUB factor
+
+   61 func_decl_part: func_decl_list SCOLON
+   62               | /* empty */
+
+   63 func_decl_list: func_decl_list SCOLON func_decl
+   64               | func_decl
+
+   65 func_decl: func_heading SCOLON block
+
+   66 $@4: /* empty */
+
+   67 func_heading: FUNCTION IDENTIFIER $@4 '(' param_list ')' COLON type
+
+   68 $@5: /* empty */
+
+   69 func_heading: FUNCTION IDENTIFIER $@5 COLON type
+
+   70 param_list: formal_param
+   71           | param_list SCOLON formal_param
+
+   72 formal_param: id_list COLON param_type
+   73             | id_list COLON ARRAY OF param_type
+
+   74 param_type: REAL
+   75           | INTEGER
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 5 34 35 36 57 67
+')' (41) 5 34 35 36 57 67
+'[' (91) 19
+']' (93) 19
+error (256)
+AND (258) 52
+ARRAY (259) 19 73
+_BEGIN (260) 25 34 35 36 37
+BREAK (261)
+BOOLEAN (262) 24
+CASE (263)
+CLASS (264)
+COMMA (265) 7 21
+CONST (266)
+CONTINUE (267)
+DO (268) 36
+DOWNTO (269)
+ELSE (270) 35
+END (271) 25 34 35 36 37
+EXIT (272)
+EXPORT (273)
+_FALSE (274) 59
+FOR (275)
+FUNCTION (276) 67 69
+POW (277)
+GOTO (278)
+IF (279) 34 35
+IN (280)
+INTEGER (281) 22 75
+IS (282)
+LABEL (283)
+MOD (284)
+NOT (285) 56
+OR (286) 48
+OF (287) 19 73
+OPERATOR (288)
+PRIVATE (289)
+PROCEDURE (290)
+PROGRAM (291) 3 5
+PUBLIC (292)
+RECORD (293)
+REAL (294) 23 74
+REPEAT (295)
+STRING (296)
+THEN (297) 34 35
+REALNUM (298) 54
+_TRUE (299) 58
+TYPE (300)
+TO (301)
+VAR (302) 11
+WHILE (303) 36
+WITH (304)
+XOR (305)
+ISEQUAL (306) 43
+NE (307) 44
+GTE (308) 42
+LT (309) 39
+LTE (310) 40
+ASSIGNMENT (311) 33
+BOR (312)
+BAND (313)
+BNOT (314)
+COLON (315) 14 67 69 72 73
+SCOLON (316) 3 5 11 12 26 27 61 63 65 71
+DOT (317) 1
+RANGE (318) 20 21
+INTNUM (319) 20 21 53
+UNTIL (320)
+IDENTIFIER (321) 3 5 6 7 18 33 55 67 69
+IFX (322)
+GT (323) 41
+SUB (324) 47 60
+ADD (325) 46
+DIV (326) 51
+MULT (327) 50
+UMINUS (328)
+PTR (329) 18
+
+
+Nonterminals, with rules where they appear
+
+$accept (79)
+    on left: 0
+program (80)
+    on left: 1, on right: 0
+prog_heading (81)
+    on left: 3 5, on right: 1
+$@1 (82)
+    on left: 2, on right: 3
+$@2 (83)
+    on left: 4, on right: 5
+id_list (84)
+    on left: 6 7, on right: 5 7 14 72 73
+block (85)
+    on left: 8 9, on right: 1 65
+decl_part (86)
+    on left: 10, on right: 8 9
+var_decl_part (87)
+    on left: 11, on right: 10
+var_decl_list (88)
+    on left: 12 13, on right: 11 12
+var_decl (89)
+    on left: 14, on right: 12 13
+type (90)
+    on left: 15 16 17, on right: 14 67 69
+ptr_type (91)
+    on left: 18, on right: 17
+array_type (92)
+    on left: 19, on right: 16
+index_type_list (93)
+    on left: 20 21, on right: 19 21
+std_type (94)
+    on left: 22 23 24, on right: 15 19
+stmt_part (95)
+    on left: 25, on right: 8
+stmt_seq (96)
+    on left: 26 27, on right: 25 26 34 35 37
+stmt (97)
+    on left: 28 29 30 31, on right: 26 27 36
+assign_stmt (98)
+    on left: 33, on right: 28
+$@3 (99)
+    on left: 32, on right: 33
+if_stmt (100)
+    on left: 34 35, on right: 29
+while_stmt (101)
+    on left: 36, on right: 30
+compound_stmt (102)
+    on left: 37, on right: 31
+expr (103)
+    on left: 38 39 40 41 42 43 44, on right: 33 34 35 36 57
+simple_expr (104)
+    on left: 45 46 47 48, on right: 38 39 40 41 42 43 44 46 47 48
+term (105)
+    on left: 49 50 51 52, on right: 45 46 47 48 50 51 52
+factor (106)
+    on left: 53 54 55 56 57 58 59 60, on right: 49 50 51 52 56 60
+func_decl_part (107)
+    on left: 61 62, on right: 10
+func_decl_list (108)
+    on left: 63 64, on right: 61 63
+func_decl (109)
+    on left: 65, on right: 63 64
+func_heading (110)
+    on left: 67 69, on right: 65
+$@4 (111)
+    on left: 66, on right: 67
+$@5 (112)
+    on left: 68, on right: 69
+param_list (113)
+    on left: 70 71, on right: 67 71
+formal_param (114)
+    on left: 72 73, on right: 70 71
+param_type (115)
+    on left: 74 75, on right: 72 73
+
+
+state 0
+
+    0 $accept: . program $end
+
+    PROGRAM  shift, and go to state 1
+
+    program       go to state 2
+    prog_heading  go to state 3
+
+
+state 1
+
+    3 prog_heading: PROGRAM . IDENTIFIER $@1 SCOLON
+    5             | PROGRAM . IDENTIFIER $@2 '(' id_list ')' SCOLON
+
+    IDENTIFIER  shift, and go to state 4
+
+
+state 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 5
+
+
+state 3
+
+    1 program: prog_heading . block DOT
+
+    VAR  shift, and go to state 6
+
+    block          go to state 7
+    decl_part      go to state 8
+    var_decl_part  go to state 9
+
+
+state 4
+
+    3 prog_heading: PROGRAM IDENTIFIER . $@1 SCOLON
+    5             | PROGRAM IDENTIFIER . $@2 '(' id_list ')' SCOLON
+
+    '('       reduce using rule 4 ($@2)
+    $default  reduce using rule 2 ($@1)
+
+    $@1  go to state 10
+    $@2  go to state 11
+
+
+state 5
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 6
+
+   11 var_decl_part: VAR . var_decl_list SCOLON
+
+    IDENTIFIER  shift, and go to state 12
+
+    id_list        go to state 13
+    var_decl_list  go to state 14
+    var_decl       go to state 15
+
+
+state 7
+
+    1 program: prog_heading block . DOT
+
+    DOT  shift, and go to state 16
+
+
+state 8
+
+    8 block: decl_part . stmt_part
+    9      | decl_part .
+
+    _BEGIN  shift, and go to state 17
+
+    $default  reduce using rule 9 (block)
+
+    stmt_part  go to state 18
+
+
+state 9
+
+   10 decl_part: var_decl_part . func_decl_part
+
+    FUNCTION  shift, and go to state 19
+
+    $default  reduce using rule 62 (func_decl_part)
+
+    func_decl_part  go to state 20
+    func_decl_list  go to state 21
+    func_decl       go to state 22
+    func_heading    go to state 23
+
+
+state 10
+
+    3 prog_heading: PROGRAM IDENTIFIER $@1 . SCOLON
+
+    SCOLON  shift, and go to state 24
+
+
+state 11
+
+    5 prog_heading: PROGRAM IDENTIFIER $@2 . '(' id_list ')' SCOLON
+
+    '('  shift, and go to state 25
+
+
+state 12
+
+    6 id_list: IDENTIFIER .
+
+    $default  reduce using rule 6 (id_list)
+
+
+state 13
+
+    7 id_list: id_list . COMMA IDENTIFIER
+   14 var_decl: id_list . COLON type
+
+    COMMA  shift, and go to state 26
+    COLON  shift, and go to state 27
+
+
+state 14
+
+   11 var_decl_part: VAR var_decl_list . SCOLON
+   12 var_decl_list: var_decl_list . SCOLON var_decl
+
+    SCOLON  shift, and go to state 28
+
+
+state 15
+
+   13 var_decl_list: var_decl .
+
+    $default  reduce using rule 13 (var_decl_list)
+
+
+state 16
+
+    1 program: prog_heading block DOT .
+
+    $default  reduce using rule 1 (program)
+
+
+state 17
+
+   25 stmt_part: _BEGIN . stmt_seq END
+
+    _BEGIN      shift, and go to state 29
+    IF          shift, and go to state 30
+    WHILE       shift, and go to state 31
+    IDENTIFIER  shift, and go to state 32
+
+    stmt_seq       go to state 33
+    stmt           go to state 34
+    assign_stmt    go to state 35
+    if_stmt        go to state 36
+    while_stmt     go to state 37
+    compound_stmt  go to state 38
+
+
+state 18
+
+    8 block: decl_part stmt_part .
+
+    $default  reduce using rule 8 (block)
+
+
+state 19
+
+   67 func_heading: FUNCTION . IDENTIFIER $@4 '(' param_list ')' COLON type
+   69             | FUNCTION . IDENTIFIER $@5 COLON type
+
+    IDENTIFIER  shift, and go to state 39
+
+
+state 20
+
+   10 decl_part: var_decl_part func_decl_part .
+
+    $default  reduce using rule 10 (decl_part)
+
+
+state 21
+
+   61 func_decl_part: func_decl_list . SCOLON
+   63 func_decl_list: func_decl_list . SCOLON func_decl
+
+    SCOLON  shift, and go to state 40
+
+
+state 22
+
+   64 func_decl_list: func_decl .
+
+    $default  reduce using rule 64 (func_decl_list)
+
+
+state 23
+
+   65 func_decl: func_heading . SCOLON block
+
+    SCOLON  shift, and go to state 41
+
+
+state 24
+
+    3 prog_heading: PROGRAM IDENTIFIER $@1 SCOLON .
+
+    $default  reduce using rule 3 (prog_heading)
+
+
+state 25
+
+    5 prog_heading: PROGRAM IDENTIFIER $@2 '(' . id_list ')' SCOLON
+
+    IDENTIFIER  shift, and go to state 12
+
+    id_list  go to state 42
+
+
+state 26
+
+    7 id_list: id_list COMMA . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 43
+
+
+state 27
+
+   14 var_decl: id_list COLON . type
+
+    ARRAY    shift, and go to state 44
+    BOOLEAN  shift, and go to state 45
+    INTEGER  shift, and go to state 46
+    REAL     shift, and go to state 47
+    PTR      shift, and go to state 48
+
+    type        go to state 49
+    ptr_type    go to state 50
+    array_type  go to state 51
+    std_type    go to state 52
+
+
+state 28
+
+   11 var_decl_part: VAR var_decl_list SCOLON .
+   12 var_decl_list: var_decl_list SCOLON . var_decl
+
+    IDENTIFIER  shift, and go to state 12
+
+    $default  reduce using rule 11 (var_decl_part)
+
+    id_list   go to state 13
+    var_decl  go to state 53
+
+
+state 29
+
+   37 compound_stmt: _BEGIN . stmt_seq END
+
+    _BEGIN      shift, and go to state 29
+    IF          shift, and go to state 30
+    WHILE       shift, and go to state 31
+    IDENTIFIER  shift, and go to state 32
+
+    stmt_seq       go to state 54
+    stmt           go to state 34
+    assign_stmt    go to state 35
+    if_stmt        go to state 36
+    while_stmt     go to state 37
+    compound_stmt  go to state 38
+
+
+state 30
+
+   34 if_stmt: IF . '(' expr ')' THEN _BEGIN stmt_seq END
+   35        | IF . '(' expr ')' THEN _BEGIN stmt_seq END ELSE _BEGIN stmt_seq END
+
+    '('  shift, and go to state 55
+
+
+state 31
+
+   36 while_stmt: WHILE . '(' expr ')' DO _BEGIN stmt END
+
+    '('  shift, and go to state 56
+
+
+state 32
+
+   33 assign_stmt: IDENTIFIER . $@3 ASSIGNMENT expr
+
+    $default  reduce using rule 32 ($@3)
+
+    $@3  go to state 57
+
+
+state 33
+
+   25 stmt_part: _BEGIN stmt_seq . END
+   26 stmt_seq: stmt_seq . stmt SCOLON
+
+    _BEGIN      shift, and go to state 29
+    END         shift, and go to state 58
+    IF          shift, and go to state 30
+    WHILE       shift, and go to state 31
+    IDENTIFIER  shift, and go to state 32
+
+    stmt           go to state 59
+    assign_stmt    go to state 35
+    if_stmt        go to state 36
+    while_stmt     go to state 37
+    compound_stmt  go to state 38
+
+
+state 34
+
+   27 stmt_seq: stmt . SCOLON
+
+    SCOLON  shift, and go to state 60
+
+
+state 35
+
+   28 stmt: assign_stmt .
+
+    $default  reduce using rule 28 (stmt)
+
+
+state 36
+
+   29 stmt: if_stmt .
+
+    $default  reduce using rule 29 (stmt)
+
+
+state 37
+
+   30 stmt: while_stmt .
+
+    $default  reduce using rule 30 (stmt)
+
+
+state 38
+
+   31 stmt: compound_stmt .
+
+    $default  reduce using rule 31 (stmt)
+
+
+state 39
+
+   67 func_heading: FUNCTION IDENTIFIER . $@4 '(' param_list ')' COLON type
+   69             | FUNCTION IDENTIFIER . $@5 COLON type
+
+    COLON     reduce using rule 68 ($@5)
+    $default  reduce using rule 66 ($@4)
+
+    $@4  go to state 61
+    $@5  go to state 62
+
+
+state 40
+
+   61 func_decl_part: func_decl_list SCOLON .
+   63 func_decl_list: func_decl_list SCOLON . func_decl
+
+    FUNCTION  shift, and go to state 19
+
+    $default  reduce using rule 61 (func_decl_part)
+
+    func_decl     go to state 63
+    func_heading  go to state 23
+
+
+state 41
+
+   65 func_decl: func_heading SCOLON . block
+
+    VAR  shift, and go to state 6
+
+    block          go to state 64
+    decl_part      go to state 8
+    var_decl_part  go to state 9
+
+
+state 42
+
+    5 prog_heading: PROGRAM IDENTIFIER $@2 '(' id_list . ')' SCOLON
+    7 id_list: id_list . COMMA IDENTIFIER
+
+    COMMA  shift, and go to state 26
+    ')'    shift, and go to state 65
+
+
+state 43
+
+    7 id_list: id_list COMMA IDENTIFIER .
+
+    $default  reduce using rule 7 (id_list)
+
+
+state 44
+
+   19 array_type: ARRAY . '[' index_type_list ']' OF std_type
+
+    '['  shift, and go to state 66
+
+
+state 45
+
+   24 std_type: BOOLEAN .
+
+    $default  reduce using rule 24 (std_type)
+
+
+state 46
+
+   22 std_type: INTEGER .
+
+    $default  reduce using rule 22 (std_type)
+
+
+state 47
+
+   23 std_type: REAL .
+
+    $default  reduce using rule 23 (std_type)
+
+
+state 48
+
+   18 ptr_type: PTR . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 67
+
+
+state 49
+
+   14 var_decl: id_list COLON type .
+
+    $default  reduce using rule 14 (var_decl)
+
+
+state 50
+
+   17 type: ptr_type .
+
+    $default  reduce using rule 17 (type)
+
+
+state 51
+
+   16 type: array_type .
+
+    $default  reduce using rule 16 (type)
+
+
+state 52
+
+   15 type: std_type .
+
+    $default  reduce using rule 15 (type)
+
+
+state 53
+
+   12 var_decl_list: var_decl_list SCOLON var_decl .
+
+    $default  reduce using rule 12 (var_decl_list)
+
+
+state 54
+
+   26 stmt_seq: stmt_seq . stmt SCOLON
+   37 compound_stmt: _BEGIN stmt_seq . END
+
+    _BEGIN      shift, and go to state 29
+    END         shift, and go to state 68
+    IF          shift, and go to state 30
+    WHILE       shift, and go to state 31
+    IDENTIFIER  shift, and go to state 32
+
+    stmt           go to state 59
+    assign_stmt    go to state 35
+    if_stmt        go to state 36
+    while_stmt     go to state 37
+    compound_stmt  go to state 38
+
+
+state 55
+
+   34 if_stmt: IF '(' . expr ')' THEN _BEGIN stmt_seq END
+   35        | IF '(' . expr ')' THEN _BEGIN stmt_seq END ELSE _BEGIN stmt_seq END
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    expr         go to state 77
+    simple_expr  go to state 78
+    term         go to state 79
+    factor       go to state 80
+
+
+state 56
+
+   36 while_stmt: WHILE '(' . expr ')' DO _BEGIN stmt END
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    expr         go to state 81
+    simple_expr  go to state 78
+    term         go to state 79
+    factor       go to state 80
+
+
+state 57
+
+   33 assign_stmt: IDENTIFIER $@3 . ASSIGNMENT expr
+
+    ASSIGNMENT  shift, and go to state 82
+
+
+state 58
+
+   25 stmt_part: _BEGIN stmt_seq END .
+
+    $default  reduce using rule 25 (stmt_part)
+
+
+state 59
+
+   26 stmt_seq: stmt_seq stmt . SCOLON
+
+    SCOLON  shift, and go to state 83
+
+
+state 60
+
+   27 stmt_seq: stmt SCOLON .
+
+    $default  reduce using rule 27 (stmt_seq)
+
+
+state 61
+
+   67 func_heading: FUNCTION IDENTIFIER $@4 . '(' param_list ')' COLON type
+
+    '('  shift, and go to state 84
+
+
+state 62
+
+   69 func_heading: FUNCTION IDENTIFIER $@5 . COLON type
+
+    COLON  shift, and go to state 85
+
+
+state 63
+
+   63 func_decl_list: func_decl_list SCOLON func_decl .
+
+    $default  reduce using rule 63 (func_decl_list)
+
+
+state 64
+
+   65 func_decl: func_heading SCOLON block .
+
+    $default  reduce using rule 65 (func_decl)
+
+
+state 65
+
+    5 prog_heading: PROGRAM IDENTIFIER $@2 '(' id_list ')' . SCOLON
+
+    SCOLON  shift, and go to state 86
+
+
+state 66
+
+   19 array_type: ARRAY '[' . index_type_list ']' OF std_type
+
+    INTNUM  shift, and go to state 87
+
+    index_type_list  go to state 88
+
+
+state 67
+
+   18 ptr_type: PTR IDENTIFIER .
+
+    $default  reduce using rule 18 (ptr_type)
+
+
+state 68
+
+   37 compound_stmt: _BEGIN stmt_seq END .
+
+    $default  reduce using rule 37 (compound_stmt)
+
+
+state 69
+
+   59 factor: _FALSE .
+
+    $default  reduce using rule 59 (factor)
+
+
+state 70
+
+   56 factor: NOT . factor
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    factor  go to state 89
+
+
+state 71
+
+   54 factor: REALNUM .
+
+    $default  reduce using rule 54 (factor)
+
+
+state 72
+
+   58 factor: _TRUE .
+
+    $default  reduce using rule 58 (factor)
+
+
+state 73
+
+   57 factor: '(' . expr ')'
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    expr         go to state 90
+    simple_expr  go to state 78
+    term         go to state 79
+    factor       go to state 80
+
+
+state 74
+
+   53 factor: INTNUM .
+
+    $default  reduce using rule 53 (factor)
+
+
+state 75
+
+   55 factor: IDENTIFIER .
+
+    $default  reduce using rule 55 (factor)
+
+
+state 76
+
+   60 factor: SUB . factor
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    factor  go to state 91
+
+
+state 77
+
+   34 if_stmt: IF '(' expr . ')' THEN _BEGIN stmt_seq END
+   35        | IF '(' expr . ')' THEN _BEGIN stmt_seq END ELSE _BEGIN stmt_seq END
+
+    ')'  shift, and go to state 92
+
+
+state 78
+
+   38 expr: simple_expr .
+   39     | simple_expr . LT simple_expr
+   40     | simple_expr . LTE simple_expr
+   41     | simple_expr . GT simple_expr
+   42     | simple_expr . GTE simple_expr
+   43     | simple_expr . ISEQUAL simple_expr
+   44     | simple_expr . NE simple_expr
+   46 simple_expr: simple_expr . ADD term
+   47            | simple_expr . SUB term
+   48            | simple_expr . OR term
+
+    OR       shift, and go to state 93
+    ISEQUAL  shift, and go to state 94
+    NE       shift, and go to state 95
+    GTE      shift, and go to state 96
+    LT       shift, and go to state 97
+    LTE      shift, and go to state 98
+    GT       shift, and go to state 99
+    SUB      shift, and go to state 100
+    ADD      shift, and go to state 101
+
+    $default  reduce using rule 38 (expr)
+
+
+state 79
+
+   45 simple_expr: term .
+   50 term: term . MULT factor
+   51     | term . DIV factor
+   52     | term . AND factor
+
+    AND   shift, and go to state 102
+    DIV   shift, and go to state 103
+    MULT  shift, and go to state 104
+
+    $default  reduce using rule 45 (simple_expr)
+
+
+state 80
+
+   49 term: factor .
+
+    $default  reduce using rule 49 (term)
+
+
+state 81
+
+   36 while_stmt: WHILE '(' expr . ')' DO _BEGIN stmt END
+
+    ')'  shift, and go to state 105
+
+
+state 82
+
+   33 assign_stmt: IDENTIFIER $@3 ASSIGNMENT . expr
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    expr         go to state 106
+    simple_expr  go to state 78
+    term         go to state 79
+    factor       go to state 80
+
+
+state 83
+
+   26 stmt_seq: stmt_seq stmt SCOLON .
+
+    $default  reduce using rule 26 (stmt_seq)
+
+
+state 84
+
+   67 func_heading: FUNCTION IDENTIFIER $@4 '(' . param_list ')' COLON type
+
+    IDENTIFIER  shift, and go to state 12
+
+    id_list       go to state 107
+    param_list    go to state 108
+    formal_param  go to state 109
+
+
+state 85
+
+   69 func_heading: FUNCTION IDENTIFIER $@5 COLON . type
+
+    ARRAY    shift, and go to state 44
+    BOOLEAN  shift, and go to state 45
+    INTEGER  shift, and go to state 46
+    REAL     shift, and go to state 47
+    PTR      shift, and go to state 48
+
+    type        go to state 110
+    ptr_type    go to state 50
+    array_type  go to state 51
+    std_type    go to state 52
+
+
+state 86
+
+    5 prog_heading: PROGRAM IDENTIFIER $@2 '(' id_list ')' SCOLON .
+
+    $default  reduce using rule 5 (prog_heading)
+
+
+state 87
+
+   20 index_type_list: INTNUM . RANGE INTNUM
+
+    RANGE  shift, and go to state 111
+
+
+state 88
+
+   19 array_type: ARRAY '[' index_type_list . ']' OF std_type
+   21 index_type_list: index_type_list . COMMA INTNUM RANGE INTNUM
+
+    COMMA  shift, and go to state 112
+    ']'    shift, and go to state 113
+
+
+state 89
+
+   56 factor: NOT factor .
+
+    $default  reduce using rule 56 (factor)
+
+
+state 90
+
+   57 factor: '(' expr . ')'
+
+    ')'  shift, and go to state 114
+
+
+state 91
+
+   60 factor: SUB factor .
+
+    $default  reduce using rule 60 (factor)
+
+
+state 92
+
+   34 if_stmt: IF '(' expr ')' . THEN _BEGIN stmt_seq END
+   35        | IF '(' expr ')' . THEN _BEGIN stmt_seq END ELSE _BEGIN stmt_seq END
+
+    THEN  shift, and go to state 115
+
+
+state 93
+
+   48 simple_expr: simple_expr OR . term
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    term    go to state 116
+    factor  go to state 80
+
+
+state 94
+
+   43 expr: simple_expr ISEQUAL . simple_expr
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    simple_expr  go to state 117
+    term         go to state 79
+    factor       go to state 80
+
+
+state 95
+
+   44 expr: simple_expr NE . simple_expr
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    simple_expr  go to state 118
+    term         go to state 79
+    factor       go to state 80
+
+
+state 96
+
+   42 expr: simple_expr GTE . simple_expr
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    simple_expr  go to state 119
+    term         go to state 79
+    factor       go to state 80
+
+
+state 97
+
+   39 expr: simple_expr LT . simple_expr
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    simple_expr  go to state 120
+    term         go to state 79
+    factor       go to state 80
+
+
+state 98
+
+   40 expr: simple_expr LTE . simple_expr
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    simple_expr  go to state 121
+    term         go to state 79
+    factor       go to state 80
+
+
+state 99
+
+   41 expr: simple_expr GT . simple_expr
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    simple_expr  go to state 122
+    term         go to state 79
+    factor       go to state 80
+
+
+state 100
+
+   47 simple_expr: simple_expr SUB . term
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    term    go to state 123
+    factor  go to state 80
+
+
+state 101
+
+   46 simple_expr: simple_expr ADD . term
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    term    go to state 124
+    factor  go to state 80
+
+
+state 102
+
+   52 term: term AND . factor
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    factor  go to state 125
+
+
+state 103
+
+   51 term: term DIV . factor
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    factor  go to state 126
+
+
+state 104
+
+   50 term: term MULT . factor
+
+    _FALSE      shift, and go to state 69
+    NOT         shift, and go to state 70
+    REALNUM     shift, and go to state 71
+    _TRUE       shift, and go to state 72
+    '('         shift, and go to state 73
+    INTNUM      shift, and go to state 74
+    IDENTIFIER  shift, and go to state 75
+    SUB         shift, and go to state 76
+
+    factor  go to state 127
+
+
+state 105
+
+   36 while_stmt: WHILE '(' expr ')' . DO _BEGIN stmt END
+
+    DO  shift, and go to state 128
+
+
+state 106
+
+   33 assign_stmt: IDENTIFIER $@3 ASSIGNMENT expr .
+
+    $default  reduce using rule 33 (assign_stmt)
+
+
+state 107
+
+    7 id_list: id_list . COMMA IDENTIFIER
+   72 formal_param: id_list . COLON param_type
+   73             | id_list . COLON ARRAY OF param_type
+
+    COMMA  shift, and go to state 26
+    COLON  shift, and go to state 129
+
+
+state 108
+
+   67 func_heading: FUNCTION IDENTIFIER $@4 '(' param_list . ')' COLON type
+   71 param_list: param_list . SCOLON formal_param
+
+    ')'     shift, and go to state 130
+    SCOLON  shift, and go to state 131
+
+
+state 109
+
+   70 param_list: formal_param .
+
+    $default  reduce using rule 70 (param_list)
+
+
+state 110
+
+   69 func_heading: FUNCTION IDENTIFIER $@5 COLON type .
+
+    $default  reduce using rule 69 (func_heading)
+
+
+state 111
+
+   20 index_type_list: INTNUM RANGE . INTNUM
+
+    INTNUM  shift, and go to state 132
+
+
+state 112
+
+   21 index_type_list: index_type_list COMMA . INTNUM RANGE INTNUM
+
+    INTNUM  shift, and go to state 133
+
+
+state 113
+
+   19 array_type: ARRAY '[' index_type_list ']' . OF std_type
+
+    OF  shift, and go to state 134
+
+
+state 114
+
+   57 factor: '(' expr ')' .
+
+    $default  reduce using rule 57 (factor)
+
+
+state 115
+
+   34 if_stmt: IF '(' expr ')' THEN . _BEGIN stmt_seq END
+   35        | IF '(' expr ')' THEN . _BEGIN stmt_seq END ELSE _BEGIN stmt_seq END
+
+    _BEGIN  shift, and go to state 135
+
+
+state 116
+
+   48 simple_expr: simple_expr OR term .
+   50 term: term . MULT factor
+   51     | term . DIV factor
+   52     | term . AND factor
+
+    AND   shift, and go to state 102
+    DIV   shift, and go to state 103
+    MULT  shift, and go to state 104
+
+    $default  reduce using rule 48 (simple_expr)
+
+
+state 117
+
+   43 expr: simple_expr ISEQUAL simple_expr .
+   46 simple_expr: simple_expr . ADD term
+   47            | simple_expr . SUB term
+   48            | simple_expr . OR term
+
+    OR   shift, and go to state 93
+    SUB  shift, and go to state 100
+    ADD  shift, and go to state 101
+
+    $default  reduce using rule 43 (expr)
+
+
+state 118
+
+   44 expr: simple_expr NE simple_expr .
+   46 simple_expr: simple_expr . ADD term
+   47            | simple_expr . SUB term
+   48            | simple_expr . OR term
+
+    OR   shift, and go to state 93
+    SUB  shift, and go to state 100
+    ADD  shift, and go to state 101
+
+    $default  reduce using rule 44 (expr)
+
+
+state 119
+
+   42 expr: simple_expr GTE simple_expr .
+   46 simple_expr: simple_expr . ADD term
+   47            | simple_expr . SUB term
+   48            | simple_expr . OR term
+
+    OR   shift, and go to state 93
+    SUB  shift, and go to state 100
+    ADD  shift, and go to state 101
+
+    $default  reduce using rule 42 (expr)
+
+
+state 120
+
+   39 expr: simple_expr LT simple_expr .
+   46 simple_expr: simple_expr . ADD term
+   47            | simple_expr . SUB term
+   48            | simple_expr . OR term
+
+    OR   shift, and go to state 93
+    SUB  shift, and go to state 100
+    ADD  shift, and go to state 101
+
+    $default  reduce using rule 39 (expr)
+
+
+state 121
+
+   40 expr: simple_expr LTE simple_expr .
+   46 simple_expr: simple_expr . ADD term
+   47            | simple_expr . SUB term
+   48            | simple_expr . OR term
+
+    OR   shift, and go to state 93
+    SUB  shift, and go to state 100
+    ADD  shift, and go to state 101
+
+    $default  reduce using rule 40 (expr)
+
+
+state 122
+
+   41 expr: simple_expr GT simple_expr .
+   46 simple_expr: simple_expr . ADD term
+   47            | simple_expr . SUB term
+   48            | simple_expr . OR term
+
+    OR   shift, and go to state 93
+    SUB  shift, and go to state 100
+    ADD  shift, and go to state 101
+
+    $default  reduce using rule 41 (expr)
+
+
+state 123
+
+   47 simple_expr: simple_expr SUB term .
+   50 term: term . MULT factor
+   51     | term . DIV factor
+   52     | term . AND factor
+
+    AND   shift, and go to state 102
+    DIV   shift, and go to state 103
+    MULT  shift, and go to state 104
+
+    $default  reduce using rule 47 (simple_expr)
+
+
+state 124
+
+   46 simple_expr: simple_expr ADD term .
+   50 term: term . MULT factor
+   51     | term . DIV factor
+   52     | term . AND factor
+
+    AND   shift, and go to state 102
+    DIV   shift, and go to state 103
+    MULT  shift, and go to state 104
+
+    $default  reduce using rule 46 (simple_expr)
+
+
+state 125
+
+   52 term: term AND factor .
+
+    $default  reduce using rule 52 (term)
+
+
+state 126
+
+   51 term: term DIV factor .
+
+    $default  reduce using rule 51 (term)
+
+
+state 127
+
+   50 term: term MULT factor .
+
+    $default  reduce using rule 50 (term)
+
+
+state 128
+
+   36 while_stmt: WHILE '(' expr ')' DO . _BEGIN stmt END
+
+    _BEGIN  shift, and go to state 136
+
+
+state 129
+
+   72 formal_param: id_list COLON . param_type
+   73             | id_list COLON . ARRAY OF param_type
+
+    ARRAY    shift, and go to state 137
+    INTEGER  shift, and go to state 138
+    REAL     shift, and go to state 139
+
+    param_type  go to state 140
+
+
+state 130
+
+   67 func_heading: FUNCTION IDENTIFIER $@4 '(' param_list ')' . COLON type
+
+    COLON  shift, and go to state 141
+
+
+state 131
+
+   71 param_list: param_list SCOLON . formal_param
+
+    IDENTIFIER  shift, and go to state 12
+
+    id_list       go to state 107
+    formal_param  go to state 142
+
+
+state 132
+
+   20 index_type_list: INTNUM RANGE INTNUM .
+
+    $default  reduce using rule 20 (index_type_list)
+
+
+state 133
+
+   21 index_type_list: index_type_list COMMA INTNUM . RANGE INTNUM
+
+    RANGE  shift, and go to state 143
+
+
+state 134
+
+   19 array_type: ARRAY '[' index_type_list ']' OF . std_type
+
+    BOOLEAN  shift, and go to state 45
+    INTEGER  shift, and go to state 46
+    REAL     shift, and go to state 47
+
+    std_type  go to state 144
+
+
+state 135
+
+   34 if_stmt: IF '(' expr ')' THEN _BEGIN . stmt_seq END
+   35        | IF '(' expr ')' THEN _BEGIN . stmt_seq END ELSE _BEGIN stmt_seq END
+
+    _BEGIN      shift, and go to state 29
+    IF          shift, and go to state 30
+    WHILE       shift, and go to state 31
+    IDENTIFIER  shift, and go to state 32
+
+    stmt_seq       go to state 145
+    stmt           go to state 34
+    assign_stmt    go to state 35
+    if_stmt        go to state 36
+    while_stmt     go to state 37
+    compound_stmt  go to state 38
+
+
+state 136
+
+   36 while_stmt: WHILE '(' expr ')' DO _BEGIN . stmt END
+
+    _BEGIN      shift, and go to state 29
+    IF          shift, and go to state 30
+    WHILE       shift, and go to state 31
+    IDENTIFIER  shift, and go to state 32
+
+    stmt           go to state 146
+    assign_stmt    go to state 35
+    if_stmt        go to state 36
+    while_stmt     go to state 37
+    compound_stmt  go to state 38
+
+
+state 137
+
+   73 formal_param: id_list COLON ARRAY . OF param_type
+
+    OF  shift, and go to state 147
+
+
+state 138
+
+   75 param_type: INTEGER .
+
+    $default  reduce using rule 75 (param_type)
+
+
+state 139
+
+   74 param_type: REAL .
+
+    $default  reduce using rule 74 (param_type)
+
+
+state 140
+
+   72 formal_param: id_list COLON param_type .
+
+    $default  reduce using rule 72 (formal_param)
+
+
+state 141
+
+   67 func_heading: FUNCTION IDENTIFIER $@4 '(' param_list ')' COLON . type
+
+    ARRAY    shift, and go to state 44
+    BOOLEAN  shift, and go to state 45
+    INTEGER  shift, and go to state 46
+    REAL     shift, and go to state 47
+    PTR      shift, and go to state 48
+
+    type        go to state 148
+    ptr_type    go to state 50
+    array_type  go to state 51
+    std_type    go to state 52
+
+
+state 142
+
+   71 param_list: param_list SCOLON formal_param .
+
+    $default  reduce using rule 71 (param_list)
+
+
+state 143
+
+   21 index_type_list: index_type_list COMMA INTNUM RANGE . INTNUM
+
+    INTNUM  shift, and go to state 149
+
+
+state 144
+
+   19 array_type: ARRAY '[' index_type_list ']' OF std_type .
+
+    $default  reduce using rule 19 (array_type)
+
+
+state 145
+
+   26 stmt_seq: stmt_seq . stmt SCOLON
+   34 if_stmt: IF '(' expr ')' THEN _BEGIN stmt_seq . END
+   35        | IF '(' expr ')' THEN _BEGIN stmt_seq . END ELSE _BEGIN stmt_seq END
+
+    _BEGIN      shift, and go to state 29
+    END         shift, and go to state 150
+    IF          shift, and go to state 30
+    WHILE       shift, and go to state 31
+    IDENTIFIER  shift, and go to state 32
+
+    stmt           go to state 59
+    assign_stmt    go to state 35
+    if_stmt        go to state 36
+    while_stmt     go to state 37
+    compound_stmt  go to state 38
+
+
+state 146
+
+   36 while_stmt: WHILE '(' expr ')' DO _BEGIN stmt . END
+
+    END  shift, and go to state 151
+
+
+state 147
+
+   73 formal_param: id_list COLON ARRAY OF . param_type
+
+    INTEGER  shift, and go to state 138
+    REAL     shift, and go to state 139
+
+    param_type  go to state 152
+
+
+state 148
+
+   67 func_heading: FUNCTION IDENTIFIER $@4 '(' param_list ')' COLON type .
+
+    $default  reduce using rule 67 (func_heading)
+
+
+state 149
+
+   21 index_type_list: index_type_list COMMA INTNUM RANGE INTNUM .
+
+    $default  reduce using rule 21 (index_type_list)
+
+
+state 150
+
+   34 if_stmt: IF '(' expr ')' THEN _BEGIN stmt_seq END .
+   35        | IF '(' expr ')' THEN _BEGIN stmt_seq END . ELSE _BEGIN stmt_seq END
+
+    ELSE  shift, and go to state 153
+
+    $default  reduce using rule 34 (if_stmt)
+
+
+state 151
+
+   36 while_stmt: WHILE '(' expr ')' DO _BEGIN stmt END .
+
+    $default  reduce using rule 36 (while_stmt)
+
+
+state 152
+
+   73 formal_param: id_list COLON ARRAY OF param_type .
+
+    $default  reduce using rule 73 (formal_param)
+
+
+state 153
+
+   35 if_stmt: IF '(' expr ')' THEN _BEGIN stmt_seq END ELSE . _BEGIN stmt_seq END
+
+    _BEGIN  shift, and go to state 154
+
+
+state 154
+
+   35 if_stmt: IF '(' expr ')' THEN _BEGIN stmt_seq END ELSE _BEGIN . stmt_seq END
+
+    _BEGIN      shift, and go to state 29
+    IF          shift, and go to state 30
+    WHILE       shift, and go to state 31
+    IDENTIFIER  shift, and go to state 32
+
+    stmt_seq       go to state 155
+    stmt           go to state 34
+    assign_stmt    go to state 35
+    if_stmt        go to state 36
+    while_stmt     go to state 37
+    compound_stmt  go to state 38
+
+
+state 155
+
+   26 stmt_seq: stmt_seq . stmt SCOLON
+   35 if_stmt: IF '(' expr ')' THEN _BEGIN stmt_seq END ELSE _BEGIN stmt_seq . END
+
+    _BEGIN      shift, and go to state 29
+    END         shift, and go to state 156
+    IF          shift, and go to state 30
+    WHILE       shift, and go to state 31
+    IDENTIFIER  shift, and go to state 32
+
+    stmt           go to state 59
+    assign_stmt    go to state 35
+    if_stmt        go to state 36
+    while_stmt     go to state 37
+    compound_stmt  go to state 38
+
+
+state 156
+
+   35 if_stmt: IF '(' expr ')' THEN _BEGIN stmt_seq END ELSE _BEGIN stmt_seq END .
+
+    $default  reduce using rule 35 (if_stmt)

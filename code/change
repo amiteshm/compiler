@@ -1,0 +1,33 @@
+func_decl_part
+
+func_heading param_list formal_param param_type func_call
+%type <nPtr> actual_params expr_list
+
+
+func_decl_part : func_heading SCOLON block SCOLON 
+			   |
+			   ; 
+
+func_heading : FUNCTION IDENTIFIER {symbol* entry=build_table(yytext);} '(' param_list ')' COLON type
+			 | FUNCTION IDENTIFIER {symbol* entry=build_table(yytext);} COLON type
+			 ;
+			 
+param_list : formal_param
+		   | param_list SCOLON formal_param  { $$ = opr(SCOLON, 2, $1, $3); }
+		   ;
+		   
+formal_param : id_list COLON param_type				{ $$ = opr(COLON, 2, $1, $3); }
+			 | id_list COLON ARRAY OF param_type	{ $$ = opr(COLON, 2, $1, $5); }
+			 ;
+
+param_type : REAL
+		   | INTEGER
+		   ;
+
+func_call : IDENTIFIER {symbol* entry=build_table(yytext);} actual_params ;
+
+actual_params : '(' expr_list ')' { $$ = $2; } ;	
+
+expr_list : expr
+		  | expr_list COMMA expr  {$$ = opr(COMMA, 2, $1, $3);}
+		  ;
